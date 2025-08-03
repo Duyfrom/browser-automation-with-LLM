@@ -1,0 +1,6 @@
+playwright==1.54.0
+selenium==4.34.2
+beautifulsoup4==4.13.4
+requests==2.32.4
+fastapi==0.115.8
+uvicorn==0.33.0
