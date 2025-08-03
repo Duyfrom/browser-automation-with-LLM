@@ -1,62 +1,100 @@
-# Browser Automation for Claude AI
+# Browser Automation with LLM Integration
 
-This project provides Claude AI with the ability to control browsers on macOS, see content, make edits, browse the web, and extract content just like a normal user.
+A comprehensive browser automation framework that enables natural language control of web browsers using Playwright. This project provides AI agents with the ability to control browsers, extract content, manage multiple tabs, and perform complex web automation tasks through natural language commands.
 
 ## 🚀 Features
 
-- **Full Browser Control**: Navigate, click, fill forms, take screenshots
-- **Content Extraction**: Get page text, links, images, and metadata  
-- **JavaScript Execution**: Run custom JavaScript on pages
-- **Multiple Interfaces**: CLI, Docker, and direct Python usage
-- **Cross-Browser Support**: Chromium, Firefox, and WebKit via Playwright
-- **Headless & GUI Modes**: Run with or without visible browser window
+- **Natural Language Control**: Command browsers using natural language through AI integration
+- **Multi-tab Management**: Handle multiple browser tabs with persistent sessions
+- **Real-time Web Scraping**: Extract and parse web content with intelligent data processing
+- **Persistent Browser Sessions**: Maintain browser state across commands with IPC communication
+- **Full Browser Control**: Navigate, click, fill forms, take screenshots, and execute JavaScript
+- **Cross-Platform Support**: Works on macOS, Linux, and Windows
+- **Docker Support**: Containerized deployment for easy scaling
+- **CSV Export**: Export scraped data to structured formats
 
 ## 📋 Requirements
 
-- **macOS** (tested on your system)
-- **Python 3.9+** ✅ (you have 3.9.6)
-- **Docker** ✅ (already installed)
+- **Python 3.9+**
+- **Node.js** (for Playwright browser binaries)
+- **Docker** (optional, for containerized deployment)
 
 ## 🛠️ Setup Options
 
 ### Option 1: Virtual Environment (Recommended)
 
 ```bash
-cd /Users/khuongduypham/browser-automation
+# Clone the repository
+git clone https://github.com/Duyfrom/browser-automation-with-LLM.git
+cd browser-automation-with-LLM
 
-# Activate virtual environment
-source venv/bin/activate
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies (already done)
-# pip install playwright selenium beautifulsoup4 requests
+# Install dependencies
+pip install -r requirements.txt
 
-# Install browser binaries (already done)
-# playwright install
+# Install browser binaries
+python3 -m playwright install
 ```
 
 ### Option 2: Docker (Containerized)
 
 ```bash
-cd /Users/khuongduypham/browser-automation
+# Clone the repository
+git clone https://github.com/Duyfrom/browser-automation-with-LLM.git
+cd browser-automation-with-LLM
 
-# Build image (already built)
-# docker build -t browser-automation .
+# Build the Docker image
+docker build -t browser-automation .
 
-# Run container
+# Run container with volume mounting for screenshots
 docker run --rm -v $(pwd)/screenshots:/app/screenshots browser-automation
 ```
 
 ## 🎮 Usage Methods
 
-### 1. Interactive CLI (Best for Claude)
+### 1. Browser Daemon with Natural Language Control (Recommended)
 
 ```bash
-# Start the interactive CLI
+# Start the persistent browser daemon
+source venv/bin/activate
+python browser_daemon.py
+```
+
+In another terminal, send natural language commands:
+```bash
+# Send commands to the running daemon
+python send_command.py "open a new tab and go to google.com"
+python send_command.py "search for 'python web scraping'"
+python send_command.py "take a screenshot"
+python send_command.py "list all tabs"
+python send_command.py "switch to tab 1"
+```
+
+**Available Natural Language Commands:**
+- "open new tab [with URL]"
+- "switch to tab [number]"
+- "close current tab"
+- "go to [URL]"
+- "click on [element description]"
+- "fill [field] with [text]"
+- "take screenshot [filename]"
+- "scroll down/up"
+- "get page content"
+- "list all tabs"
+- "close browser"
+
+### 2. Interactive CLI
+
+```bash
+# Start the basic CLI interface
 source venv/bin/activate
 python cli.py
 ```
 
-**Available Commands:**
+**CLI Commands:**
 ```
 start                    - Start browser session
 goto <url>              - Navigate to URL  
@@ -71,17 +109,6 @@ js <script>            - Execute JavaScript
 close                  - Close browser
 help                   - Show help
 quit                   - Exit CLI
-```
-
-**Example Session:**
-```
-🤖 > start
-🤖 > goto https://google.com
-🤖 > fill input[name="q"] "Claude AI browser automation"
-🤖 > click input[type="submit"]
-🤖 > screenshot google_results.png
-🤖 > content
-🤖 > quit
 ```
 
 ### 2. Direct Python Usage
@@ -192,14 +219,20 @@ automation = BrowserAutomation(headless=False)  # Visual debugging
 ## 📁 File Structure
 
 ```
-browser-automation/
-├── browser_automation.py  # Main automation class
-├── cli.py                # Interactive CLI interface  
-├── main.py              # Entry point
-├── requirements.txt     # Python dependencies
-├── Dockerfile          # Container setup
-├── README.md           # This file
-└── venv/              # Virtual environment
+browser-automation-with-LLM/
+├── .gitignore               # Git ignore patterns
+├── README.md                # This documentation
+├── requirements.txt         # Python dependencies
+├── Dockerfile               # Container setup
+├── browser_daemon.py        # Persistent browser session manager
+├── send_command.py          # Command helper for IPC communication
+├── browser_automation.py    # Core automation class
+├── cli.py                   # Basic CLI interface
+├── natural_browser_cli.py   # Natural language interface
+├── persistent_browser.py    # Browser persistence utilities
+├── wine_scraper.py          # Example web scraping implementation
+├── parse_wine_data.py       # Data parsing utilities
+└── main.py                 # Entry point
 ```
 
 ## 🎉 Success!
